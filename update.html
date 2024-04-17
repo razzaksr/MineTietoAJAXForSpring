@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Establish New Loan</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script>
+        $(document).ready(()=>{
+            $("#update").click((eve)=>{
+                eve.preventDefault()
+                /*
+                const number = $("#loanNumber").val()
+                const name = $("#loanName").val()
+                const type = $("#loanType").val()
+                const desc = $("#loanDescription").val()
+                const roi = $("#loanRoi").val()
+                */
+
+                /*
+                const obj = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:loan=\"http://loans.services\">\n"+
+                    +"<soapenv:Header/>"
+                    +"<soapenv:Body>"
+                       +"<loan:updateLoanRequest>"
+                          +"<loan:loans>"
+                             +"<loan:loanNumber>"+number+"</loan:loanNumber>"
+                             +"<loan:loanName>"+name+"</loan:loanName>"
+                             +"<loan:loanType>"+type+"</loan:loanType>"
+                             +"<loan:loanDescription>"+desc+"</loan:loanDescription>"
+                             +"<loan:loanRoi>"+roi+"</loan:loanRoi>"
+                          +"</loan:loans>"
+                       +"</loan:updateLoanRequest>"
+                    +"</soapenv:Body>"
+                 +"</soapenv:Envelope>"
+                 */
+
+                var obj = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:loan="http://loans.services">
+                    <soapenv:Header/>
+                    <soapenv:Body>
+                       <loan:updateLoanRequest>
+                          <loan:loans>
+                             <loan:loanNumber>2</loan:loanNumber>
+                             <loan:loanName>kjvkjdv</loan:loanName>
+                             <loan:loanType>kjbvjksd</loan:loanType>
+                             <loan:loanDescription>skjbvskjdb</loan:loanDescription>
+                             <loan:loanRoi>12.3</loan:loanRoi>
+                          </loan:loans>
+                       </loan:updateLoanRequest>
+                    </soapenv:Body>
+                 </soapenv:Envelope>`
+
+                alert(obj)
+
+                $.ajax({
+					type: "POST",
+					contentType: "text/xml;charset=\"UTF-8\"",
+					url: "http://localhost:8082/loansrepo",
+                    beforeSend: function(xhr){
+                        xhr.setRequestHeader("Authorization", "Basic " + btoa("Sinchana:chinchan"));
+                    },
+					data: obj,
+                    success:function(data){
+                        $(data).find('ns2\\:loans').each(function() {
+                            var number = $(this).find('ns2\\:loanNumber').text();
+                            var name = $(this).find('ns2\\:loanName').text();
+                            var type = $(this).find('ns2\\:loanType').text();
+                            var desc = $(this).find('ns2\\:loanDescription').text();
+                            var roi = $(this).find('ns2\\:loanRoi').text();
+                            console.log('number: ' + number + ', name: ' + name + ', type: ' + type+ ', description: ' + desc+ ', roi: ' + roi);
+                          });
+                    },
+                    error:(err)=>{
+                        alert($(err).find("ns2\\:serviceStatus").find("ns2\\:status").text())
+                    }
+				});
+            })
+        })
+    </script>
+</head>
+<body>
+    <form>
+        <input type="text" id="loanNumber" />
+        <input type="text" id="loanName" />
+        <input type="text" id="loanType" />
+        <textarea id="loanDescription"></textarea>
+        <input type="text" id="loanRoi" />
+        <input type="button" id="update" value="Establish"/>
+    </form>
+</body>
+</html>

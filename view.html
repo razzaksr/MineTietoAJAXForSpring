@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script>
+        $(document).ready(()=>{
+            $.ajax({
+                url:"http://localhost:8082/",
+                type: 'GET',
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader("Authorization", "Basic " + btoa("Sinchana:chinchan"));
+                },
+                success:function(data){
+                    alert(JSON.stringify(data))
+                    let tabBody=$("#view")
+                    tabBody.empty()
+                    data.map((each)=>{
+                        tabBody.append("<tr><td>"+each.loanNumber+"</td><td>"+each.loanName+"</td><td>"+each.loanType+"</td><td>"+each.loanDescription+"</td><td>"+each.loanRoi+"</td></tr>")
+                    })
+                },
+                error:function(error,thrown){
+                    alert(JSON.stringify(error))
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+    <table border="4px">
+        <thead>
+            <tr>
+                <th>ID</th><th>Name</th><th>Type</th><th>Description</th><th>ROI</th>
+            </tr>
+        </thead>
+        <tbody id="view">
+            
+        </tbody>
+    </table>
+</body>
+</html>

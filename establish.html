@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Establish New Loan</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script>
+        $(document).ready(()=>{
+            $("#save").click((eve)=>{
+                eve.preventDefault()
+                const name = $("#loanName").val()
+                const type = $("#loanType").val()
+                const desc = $("#loanDescription").val()
+                const roi = $("#loanRoi").val()
+
+                const obj = {
+                    "loanName":name,
+                    "loanType":type,
+                    "loanDescription":desc,
+                    "loanRoi":roi
+                }
+
+                alert(JSON.stringify(obj))
+
+                $.ajax({
+					type: "POST",
+                    dataType:"text",
+					contentType: "application/json;charset=utf-8",
+					url: "http://localhost:8082/",
+                    beforeSend: function(xhr){
+                        xhr.setRequestHeader("Authorization", "Basic " + btoa("Sinchana:chinchan"));
+                    },
+					data: JSON.stringify(obj),
+                    success:function(data){
+                        alert(JSON.stringify(data))
+                    },
+                    error:(err)=>{
+                        alert(JSON.stringify(err))
+                    }
+				});
+            })
+        })
+    </script>
+</head>
+<body>
+    <form>
+        <input type="text" id="loanName" />
+        <input type="text" id="loanType" />
+        <textarea id="loanDescription"></textarea>
+        <input type="text" id="loanRoi" />
+        <input type="button" id="save" value="Establish"/>
+    </form>
+</body>
+</html>
