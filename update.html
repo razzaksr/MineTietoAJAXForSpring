@@ -9,15 +9,15 @@
         $(document).ready(()=>{
             $("#update").click((eve)=>{
                 eve.preventDefault()
-                /*
+                
                 const number = $("#loanNumber").val()
                 const name = $("#loanName").val()
                 const type = $("#loanType").val()
                 const desc = $("#loanDescription").val()
                 const roi = $("#loanRoi").val()
-                */
+                
 
-                /*
+                
                 const obj = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:loan=\"http://loans.services\">\n"+
                     +"<soapenv:Header/>"
                     +"<soapenv:Body>"
@@ -32,8 +32,9 @@
                        +"</loan:updateLoanRequest>"
                     +"</soapenv:Body>"
                  +"</soapenv:Envelope>"
-                 */
+                
 
+                /*
                 var obj = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:loan="http://loans.services">
                     <soapenv:Header/>
                     <soapenv:Body>
@@ -48,15 +49,18 @@
                        </loan:updateLoanRequest>
                     </soapenv:Body>
                  </soapenv:Envelope>`
+                */
 
                 alert(obj)
 
                 $.ajax({
+                    url:"http://localhost:8082/loansrepo",
 					type: "POST",
-					contentType: "text/xml;charset=\"UTF-8\"",
-					url: "http://localhost:8082/loansrepo",
+                    dataType: "xml",
+                    contentType: "text/xml;charset=UTF-8",
                     beforeSend: function(xhr){
                         xhr.setRequestHeader("Authorization", "Basic " + btoa("Sinchana:chinchan"));
+                        xhr.setRequestHeader("SOAPAction", "updateLoanRequest");
                     },
 					data: obj,
                     success:function(data){

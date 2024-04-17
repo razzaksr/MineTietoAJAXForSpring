@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script>
+        $(document).ready(()=>{
+            $("#loanNumber").change(function(){
+                const number = $(this).val()
+                var req = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:loan="http://loans.services">
+                    <soapenv:Header/>
+                    <soapenv:Body>
+                    <loan:callDeletionRequest>
+                        <loan:loanNumber>${number}</loan:loanNumber>
+                    </loan:callDeletionRequest>
+                    </soapenv:Body>
+                </soapenv:Envelope>`
+                
+                $.ajax({
+                    url:"http://localhost:8082/loansrepo",
+					type: "POST",
+                    dataType: "xml",
+                    contentType: "text/xml;charset=UTF-8",
+                    beforeSend: function(xhr){
+                        xhr.setRequestHeader("Authorization", "Basic " + btoa("Sinchana:chinchan"));
+                        xhr.setRequestHeader("SOAPAction", "callDeletionRequest");
+                    },
+					data: req,
+                    success:function(data){
+                        const res = $(data).find("ns2\\:serviceStatus").find("ns2\\:status").text()
+                        console.log(res)
+                    },
+                    error:(err)=>{
+                        alert($(err).find("ns2\\:serviceStatus").find("ns2\\:status").text())
+                    }
+				});
+            })
+        })
+    </script>
+</head>
+<body>
+    <input type="text" id="loanNumber" />
+</body>
+</html>
